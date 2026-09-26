@@ -1,0 +1,32 @@
+{
+  "name": "hospital-management-system",
+  "version": "1.0.0",
+  "description": "Hospital Management System (HMS) - Full-Stack Application",
+  "main": "dev.js",
+  "scripts": {
+    "dev": "node dev.js",
+    "start": "node dev.js",
+    "backend:dev": "npm --prefix backend run dev",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "test:auth": "npm --prefix backend run test:auth",
+    "test:permissions": "npm --prefix backend run test:permissions",
+    "test:appointments": "npm --prefix backend run test:appointments",
+    "test:chatbot": "npm --prefix backend run test:chatbot"
+  },
+  "keywords": [
+    "hospital-management",
+    "healthcare",
+    "react",
+    "express",
+    "mysql",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^7.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2"
+  }
+}
