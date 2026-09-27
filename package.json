@@ -24,7 +24,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^7.6.0"
+    "mongodb": "^7.6.0",
+    "mysql2": "^3.24.4"
   },
   "devDependencies": {
     "@types/node": "^26.6.2"
