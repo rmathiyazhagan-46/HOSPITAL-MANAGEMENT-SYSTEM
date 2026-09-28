@@ -71,3 +71,14 @@ api.interceptors.request.use(
 );
 
 export default api;
+
+// Backend warm-up
+if (typeof window !== 'undefined') {
+  fetch('https://hospital-management-system-69g8.vercel.app/api/health', {
+    method: 'GET',
+    cache: 'no-store',
+  }).catch(() => {
+    // Ignore warm-up errors
+  });
+}
+
