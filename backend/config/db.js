@@ -1,7 +1,11 @@
 const { Sequelize } = require('sequelize');
 require('mysql2');
+
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+require('dotenv').config({
+  path: path.resolve(__dirname, '../.env'),
+});
 
 const dialect = 'mysql';
 
@@ -23,16 +27,27 @@ if (dialect === 'sqlite') {
     process.env.DB_USER || 'root',
     process.env.DB_PASSWORD || '',
     {
-      host: process.env.DB_HOST || '127.0.0.1',
-      port: process.env.DB_PORT || 3306,
+      // Railway MySQL connection
+      host: process.env.DB_HOST,
+      port: Number(process.env.DB_PORT),
+
       dialect: 'mysql',
-      logging: process.env.DB_LOGGING === 'true' ? console.log : false,
+
+      // Connection timeout
+      connectTimeout: 30000,
+
+      logging:
+        process.env.DB_LOGGING === 'true'
+          ? console.log
+          : false,
+
       pool: {
         max: 10,
         min: 0,
         acquire: 30000,
         idle: 10000,
       },
+
       define: {
         timestamps: true,
         underscored: true,
@@ -42,12 +57,36 @@ if (dialect === 'sqlite') {
   );
 }
 
+// =====================================================
+// TEST DATABASE CONNECTION
+// =====================================================
+
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
-    console.log(`[Database] Connection successfully established (${dialect.toUpperCase()}).`);
+
+    console.log(
+      `[Database] Connection successfully established (${dialect.toUpperCase()}).`
+    );
+
+    console.log(
+      `[Database] Host: ${process.env.DB_HOST}`
+    );
+
+    console.log(
+      `[Database] Port: ${process.env.DB_PORT}`
+    );
+
+    console.log(
+      `[Database] Database: ${process.env.DB_NAME}`
+    );
   } catch (error) {
-    console.error('[Database] Unable to connect to the database:', error.message);
+    console.error(
+      '[Database] Unable to connect to the database:',
+      error.message
+    );
+
+    throw error;
   }
 };
 

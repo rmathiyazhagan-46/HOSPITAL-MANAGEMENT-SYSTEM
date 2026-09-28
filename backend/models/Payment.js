@@ -23,7 +23,7 @@ const Payment = sequelize.define('Payment', {
     },
   },
   payment_mode: {
-    type: DataTypes.ENUM('cash', 'card', 'upi', 'upi_qr', 'netbanking', 'insurance'),
+    type: DataTypes.ENUM('cash', 'card', 'upi', 'upi_qr', 'upi_manual', 'netbanking', 'insurance'),
     allowNull: false,
     defaultValue: 'upi_qr',
   },

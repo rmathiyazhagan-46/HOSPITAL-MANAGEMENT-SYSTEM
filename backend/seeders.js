@@ -41,7 +41,7 @@ const seedInitialData = async () => {
 
     // 3. Seed 8 Doctors across departments
     const docCount = await Doctor.count();
-    
+
     // Always ensure the default password is correct for all seeded doctors
     const correctDocPass = await bcrypt.hash('docter@123', 10);
 
@@ -72,7 +72,7 @@ const seedInitialData = async () => {
       }
       console.log('[Seed] 15 Hospital doctors verified/seeded.');
     }
-    
+
     // Always forcefully update existing seeded doctors to the correct password hash in case it was wrong
     await Doctor.update(
       { password_hash: correctDocPass },
