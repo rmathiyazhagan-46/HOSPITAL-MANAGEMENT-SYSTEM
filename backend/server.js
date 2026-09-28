@@ -100,15 +100,18 @@ const initializeDatabase = async () => {
       // Test database connection
       await testConnection();
 
-      console.log('[Database] Synchronizing database tables...');
+      // Do NOT run Sequelize sync in production.
+      // Railway MySQL already contains the required tables.
+      if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
+        console.log('[Database] Synchronizing database tables...');
 
-      // Create missing tables without altering existing structure
-      await syncDatabase({
-        alter: false,
-      });
+        await syncDatabase({
+          alter: false,
+        });
+      }
 
       console.log(
-        '[Database] Database connection and tables initialized successfully.'
+        '[Database] Database connection initialized successfully.'
       );
     })().catch((error) => {
       // Allow retry if initialization fails
@@ -235,3 +238,4 @@ if (require.main === module) {
 // =====================================================
 
 module.exports = app;
+
