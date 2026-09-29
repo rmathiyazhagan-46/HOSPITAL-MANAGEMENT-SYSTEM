@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, Bell, Check, CheckCheck, RefreshCw, CalendarCheck, Clock, X } from 'lucide-react';
+import { LogOut, User, Bell, Check, CheckCheck, RefreshCw, CalendarCheck, Clock, X, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 
@@ -18,7 +18,7 @@ const formatTimeAgo = (dateStr) => {
   return `${diffDays}d ago`;
 };
 
-const Navbar = ({ role, title = 'Dashboard' }) => {
+const Navbar = ({ role, title = 'Dashboard', onMenuClick = () => {} }) => {
   const { adminAuth, doctorAuth, patientAuth, logout } = useAuth();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -104,8 +104,16 @@ const Navbar = ({ role, title = 'Dashboard' }) => {
 
   return (
     <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-3">
-        <h1 className="text-xl font-bold text-slate-800">{title}</h1>
+      <div className="flex items-center gap-2 min-w-0">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          className="md:hidden p-2 -ml-2 rounded-lg text-slate-600 hover:bg-slate-100"
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <h1 className="text-xl font-bold text-slate-800 truncate">{title}</h1>
       </div>
 
       <div className="flex items-center gap-4">
@@ -252,3 +260,4 @@ const Navbar = ({ role, title = 'Dashboard' }) => {
 };
 
 export default Navbar;
+

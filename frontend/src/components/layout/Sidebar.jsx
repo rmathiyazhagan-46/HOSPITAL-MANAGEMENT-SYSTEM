@@ -8,10 +8,10 @@ import {
   FileText,
   DollarSign,
   Pill,
-  ShieldCheck,
   Stethoscope,
   HeartPulse,
   CalendarCheck,
+  X,
 } from 'lucide-react';
 
 const menusByRole = {
@@ -39,57 +39,96 @@ const menusByRole = {
   ],
 };
 
-const Sidebar = ({ role }) => {
+const Sidebar = ({ role, isOpen = false, onClose = () => {} }) => {
   const items = menusByRole[role] || [];
 
   return (
-    <aside className="w-64 bg-slate-900 text-white flex flex-col h-screen sticky top-0 z-40">
-      {/* Brand Header */}
-      <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-sky-400 flex items-center justify-center text-white shadow-md">
-          <HeartPulse className="w-5 h-5" />
-        </div>
-        <div>
-          <span className="font-bold text-lg tracking-tight text-white block">Apex Health</span>
-          <span className="text-[10px] uppercase font-semibold text-brand-400 tracking-wider">
-            {role} Portal
-          </span>
-        </div>
-      </div>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
 
-      {/* Navigation Links */}
-      <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
-        {items.map((item, idx) => {
-          const Icon = item.icon;
-          return (
-            <NavLink
-              key={idx}
-              to={item.path}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'bg-brand-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-                }`
-              }
-            >
-              <Icon className="w-4 h-4" />
-              <span>{item.label}</span>
-            </NavLink>
-          );
-        })}
-      </nav>
+      <aside
+        className={`
+          fixed md:sticky md:top-0 top-0 left-0 w-64 shrink-0 md:self-start
+          bg-slate-900 text-white
+          flex flex-col
+          min-h-screen h-screen z-50
+          transform transition-transform duration-300 ease-in-out
+          md:translate-x-0
+          ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        `}
+      >
+        {/* Brand Header */}
+        <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800 flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-sky-400 flex items-center justify-center text-white shadow-md">
+            <HeartPulse className="w-5 h-5" />
+          </div>
 
-      {/* Footer info */}
-      <div className="p-4 border-t border-slate-800 text-xs text-slate-500">
-        <div className="flex items-center gap-2 text-emerald-400 font-medium mb-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>System Online</span>
+          <div className="min-w-0">
+            <span className="font-bold text-lg tracking-tight text-white block truncate">
+              Apex Health
+            </span>
+            <span className="text-[10px] uppercase font-semibold text-brand-400 tracking-wider">
+              {role} Portal
+            </span>
+          </div>
+
+          {/* Mobile Close Button */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-auto md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-        <p>Apex Hospital Management v1.0</p>
-      </div>
-    </aside>
+
+        {/* Navigation Links */}
+        <nav className="flex-1 px-3 py-6 space-y-1.5 overflow-y-auto">
+          {items.map((item, idx) => {
+            const Icon = item.icon;
+
+            return (
+              <NavLink
+                key={idx}
+                to={item.path}
+                onClick={onClose}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'bg-brand-600 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  }`
+                }
+              >
+                <Icon className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </NavLink>
+            );
+          })}
+        </nav>
+
+        {/* Footer info */}
+        <div className="p-4 border-t border-slate-800 text-xs text-slate-500 flex-shrink-0">
+          <div className="flex items-center gap-2 text-emerald-400 font-medium mb-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>System Online</span>
+          </div>
+          <p>Apex Hospital Management v1.0</p>
+        </div>
+      </aside>
+    </>
   );
 };
 
 export default Sidebar;
+
+
+
